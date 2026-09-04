@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>兆辉防腐 · 报价单工作台</title>
+  <link rel="stylesheet" href="assets/styles.css?v=202609047">
+</head>
+<body>
+  <div class="app-shell" id="app">
+    <aside class="side-rail">
+      <div class="brand">
+        <div class="brand-mark">兆</div>
+        <div class="brand-text">
+          <strong>报价单工作台</strong>
+          <span>江苏兆辉防腐科技</span>
+        </div>
+      </div>
+      <nav class="rail-nav" aria-label="主导航">
+        <button class="rail-btn is-active" data-view="editor" type="button">
+          <i data-lucide="file-pen-line"></i><span>编辑报价</span>
+        </button>
+        <button class="rail-btn" data-view="history" type="button">
+          <i data-lucide="history"></i><span>报价记录</span>
+        </button>
+        <button class="rail-btn" data-view="library" type="button">
+          <i data-lucide="images"></i><span>图片素材</span>
+        </button>
+        <button class="rail-btn" data-view="settings" type="button">
+          <i data-lucide="building-2"></i><span>公司资料</span>
+        </button>
+      </nav>
+      <div class="rail-foot">
+        <i data-lucide="hard-drive"></i>
+        <span>数据保存在本机</span>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="doc-heading">
+          <input id="f-title" class="doc-title-input" value="产品报价单" maxlength="40" aria-label="报价单标题">
+          <span class="save-state" id="save-state"><i data-lucide="check-circle-2"></i><span>已同步</span></span>
+        </div>
+        <div class="top-actions">
+          <button class="btn btn-quiet" id="btn-save" type="button">
+            <i data-lucide="save"></i><span>保存</span>
+          </button>
+          <button class="btn btn-primary" id="btn-export-word" type="button">
+            <i data-lucide="file-down"></i><span>Word</span>
+          </button>
+          <button class="btn btn-accent" id="btn-export-pdf" type="button">
+            <i data-lucide="file-text"></i><span>PDF</span>
+          </button>
+        </div>
+      </header>
+
+      <section class="view is-active" id="view-editor">
+        <div class="editor-layout">
+          <div class="editor-panel">
+            <div class="editor-scroll">
+              <section class="form-block">
+                <div class="form-head">
+                  <div class="form-head-icon"><i data-lucide="building"></i></div>
+                  <div>
+                    <h2>客户与项目</h2>
+                    <p>填写收件单位和项目背景</p>
+                  </div>
+                </div>
+                <div class="form-grid">
+                  <label class="field field-full">
+                    <span>收件单位</span>
+                    <input id="f-recipient-unit" type="text" autocomplete="off" placeholder="客户公司全称">
+                  </label>
+                  <label class="field">
+                    <span>联系人</span>
+                    <input id="f-recipient-contact" type="text" autocomplete="off" placeholder="姓名 / 职务">
+                  </label>
+                  <label class="field">
+                    <span>电话 / 微信</span>
+                    <input id="f-recipient-phone" type="text" autocomplete="off" placeholder="手机或座机">
+                  </label>
+                  <label class="field field-full">
+                    <span>电子邮箱</span>
+                    <input id="f-recipient-email" type="email" autocomplete="off" placeholder="name@example.com">
+                  </label>
+                  <label class="field field-full">
+                    <span>单位地址</span>
+                    <input id="f-recipient-address" type="text" autocomplete="off" placeholder="收件单位地址">
+                  </label>
+                  <label class="field">
+                    <span>项目名称</span>
+                    <input id="f-project-name" type="text" autocomplete="off" placeholder="项目 / 采购事项">
+                  </label>
+                  <label class="field field-wide">
+                    <span>报价主题</span>
+                    <input id="f-subject" type="text" autocomplete="off" placeholder="报价涉及的设备或工程范围">
+                  </label>
+                </div>
+                <div class="form-row three">
+                  <label class="field">
+                    <span>报价单号</span>
+                    <input id="f-quote-no" type="text" autocomplete="off" placeholder="自动生成后可修改">
+                  </label>
+                  <label class="field">
+                    <span>报价日期</span>
+                    <input id="f-date" type="date">
+                  </label>
+                  <label class="field">
+                    <span>有效期至</span>
+                    <input id="f-valid-until" type="date">
+                  </label>
+                </div>
+              </section>
+
+              <section class="form-block">
+                <div class="form-head">
+                  <div class="form-head-icon"><i data-lucide="list-todo"></i></div>
+                  <div>
+                    <h2>产品报价明细</h2>
+                    <p>数量乘单价自动计算总价</p>
+                  </div>
+                  <div class="head-actions">
+                    <button class="mini-btn" id="btn-reorder-items" type="button" title="按当前序号重新排列">
+                      <i data-lucide="sort-asc"></i>
+                    </button>
+                    <button class="mini-btn" id="btn-add-item" type="button" title="添加一行">
+                      <i data-lucide="plus"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="item-editor-wrap">
+                  <table class="item-editor-table">
+                    <thead>
+                      <tr>
+                        <th class="col-no">序号</th>
+                        <th class="col-name">名称 / 型号</th>
+                        <th class="col-material">材质</th>
+                        <th class="col-spec">规格 / 尺寸</th>
+                        <th class="col-qty">数量</th>
+                        <th class="col-unit">单位</th>
+                        <th class="col-price">单价</th>
+                        <th class="col-amount">总价</th>
+                        <th class="col-note">备注</th>
+                        <th class="col-tools"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="item-rows"></tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section class="form-block">
+                <div class="form-head">
+                  <div class="form-head-icon"><i data-lucide="scroll-text"></i></div>
+                  <div>
+                    <h2>商务条款与说明</h2>
+                    <p>写清楚交付、付款和备注信息</p>
+                  </div>
+                </div>
+                <div class="form-row three">
+                  <label class="field">
+                    <span>付款方式</span>
+                    <input id="f-payment" type="text" autocomplete="off" placeholder="如预付 30%，发货前付清">
+                  </label>
+                  <label class="field">
+                    <span>交货周期</span>
+                    <input id="f-delivery" type="text" autocomplete="off" placeholder="如 30 个工作日">
+                  </label>
+                  <label class="field">
+                    <span>质保期限</span>
+                    <input id="f-quality" type="text" autocomplete="off" placeholder="如验收后 12 个月">
+                  </label>
+                </div>
+                <label class="field field-full">
+                  <span>备注 / 说明</span>
+                  <textarea id="f-notes" rows="5" autocomplete="off" placeholder="每行一条，导出时逐条展示"></textarea>
+                </label>
+                <label class="field field-full">
+                  <span>页尾寄语</span>
+                  <input id="f-footer" type="text" autocomplete="off" placeholder="报价单底部的致谢语句">
+                </label>
+              </section>
+
+              <section class="form-block">
+                <div class="form-head">
+                  <div class="form-head-icon"><i data-lucide="badge-check"></i></div>
+                  <div>
+                    <h2>资质与认证</h2>
+                    <p>补充产品证书编号等信息</p>
+                  </div>
+                  <div class="head-actions">
+                    <label class="switch" title="在报价单中展示">
+                      <input id="f-show-certs" type="checkbox" checked>
+                      <span></span>
+                    </label>
+                    <button class="mini-btn" id="btn-add-cert" type="button" title="添加证书">
+                      <i data-lucide="plus"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="cert-list" id="cert-list"></div>
+              </section>
+
+              <section class="form-block">
+                <div class="form-head">
+                  <div class="form-head-icon"><i data-lucide="palette"></i></div>
+                  <div>
+                    <h2>版式与照片</h2>
+                    <p>选择主题色，决定是否附照片页</p>
+                  </div>
+                </div>
+                <div class="theme-row" id="theme-row">
+                  <button class="theme-option is-active" data-theme="blue" type="button"><span class="swatch swatch-blue"></span>工业蓝</button>
+                  <button class="theme-option" data-theme="teal" type="button"><span class="swatch swatch-teal"></span>防腐青</button>
+                  <button class="theme-option" data-theme="graphite" type="button"><span class="swatch swatch-graphite"></span>石墨灰</button>
+                </div>
+                <div class="form-row three">
+                  <label class="field field-check">
+                    <input id="f-show-photos" type="checkbox" checked>
+                    <span>报价单后附产品 / 车间照片</span>
+                  </label>
+                </div>
+                <div class="photo-shortcut" id="photo-shortcut">
+                  <div class="photo-shortcut-icon"><i data-lucide="image-plus"></i></div>
+                  <div>
+                    <strong id="selected-photo-count">0 张照片已选用</strong>
+                    <span>去素材库添加公司实拍照片</span>
+                  </div>
+                  <button class="btn btn-soft btn-small" id="btn-open-library" type="button">管理素材</button>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div class="preview-panel">
+            <div class="preview-toolbar">
+              <div class="preview-title">
+                <i data-lucide="layout-panel-left"></i>
+                <span>实时预览</span>
+              </div>
+              <div class="zoom-controls">
+                <button class="zoom-btn" data-zoom="out" type="button" title="缩小"><i data-lucide="minus"></i></button>
+                <span id="zoom-label">100%</span>
+                <button class="zoom-btn" data-zoom="in" type="button" title="放大"><i data-lucide="plus"></i></button>
+              </div>
+            </div>
+            <div class="sheet-stage" id="sheet-stage"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-history">
+        <div class="sub-page">
+          <div class="sub-head">
+            <div>
+              <div class="eyebrow">历史文件</div>
+              <h1>报价记录</h1>
+            </div>
+            <button class="btn btn-primary" id="btn-new-quote" type="button">
+              <i data-lucide="plus"></i><span>新建报价</span>
+            </button>
+          </div>
+          <div class="history-grid" id="history-grid"></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-library">
+        <div class="sub-page">
+          <div class="sub-head">
+            <div>
+              <div class="eyebrow">公司图片库</div>
+              <h1>产品、车间与证书素材</h1>
+            </div>
+            <button class="btn btn-soft" id="btn-rescan-assets" type="button">
+              <i data-lucide="refresh-cw"></i><span>刷新素材</span>
+            </button>
+          </div>
+          <div class="library-note">
+            <i data-lucide="info"></i>
+            <span>图片上传后存放在报价目录的「素材」文件夹，可反复用于历史报价单。</span>
+          </div>
+          <div id="library-groups" class="library-groups"></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-settings">
+        <div class="sub-page">
+          <div class="sub-head">
+            <div>
+              <div class="eyebrow">企业信息</div>
+              <h1>公司资料与默认抬头</h1>
+            </div>
+            <button class="btn btn-primary" id="btn-save-company" type="button">
+              <i data-lucide="save"></i><span>保存公司资料</span>
+            </button>
+          </div>
+          <div class="settings-grid">
+            <div class="form-block">
+              <div class="form-head">
+                <div class="form-head-icon"><i data-lucide="landmark"></i></div>
+                <div><h2>公司抬头</h2><p>用于报价单左上角和底部</p></div>
+              </div>
+              <div class="form-grid">
+                <label class="field field-full">
+                  <span>公司全称</span>
+                  <input id="s-company-name" type="text">
+                </label>
+                <label class="field">
+                  <span>简称</span>
+                  <input id="s-short-name" type="text">
+                </label>
+                <label class="field field-wide">
+                  <span>标语</span>
+                  <input id="s-slogan" type="text">
+                </label>
+                <label class="field field-full">
+                  <span>公司地址</span>
+                  <input id="s-address" type="text">
+                </label>
+                <label class="field">
+                  <span>联系电话</span>
+                  <input id="s-phone" type="text">
+                </label>
+                <label class="field">
+                  <span>电子邮箱</span>
+                  <input id="s-email" type="text">
+                </label>
+                <label class="field field-wide">
+                  <span>官网</span>
+                  <input id="s-website" type="text">
+                </label>
+              </div>
+            </div>
+            <div class="form-block">
+              <div class="form-head">
+                <div class="form-head-icon"><i data-lucide="user-round"></i></div>
+                <div><h2>销售信息</h2><p>显示在报价单页脚</p></div>
+              </div>
+              <div class="form-grid">
+                <label class="field">
+                  <span>销售姓名</span>
+                  <input id="s-sales-name" type="text">
+                </label>
+                <label class="field">
+                  <span>销售电话 / 微信</span>
+                  <input id="s-sales-phone" type="text">
+                </label>
+                <label class="field field-full">
+                  <span>默认报价单号前缀</span>
+                  <input id="s-quote-prefix" type="text">
+                </label>
+              </div>
+            </div>
+            <div class="form-block">
+              <div class="form-head">
+                <div class="form-head-icon"><i data-lucide="banknote"></i></div>
+                <div><h2>开票与收款</h2><p>按财务资料填写，导出时可由你在备注中引用</p></div>
+              </div>
+              <div class="form-grid">
+                <label class="field field-full">
+                  <span>统一社会信用代码</span>
+                  <input id="s-unified-code" type="text">
+                </label>
+                <label class="field">
+                  <span>开户银行</span>
+                  <input id="s-bank" type="text">
+                </label>
+                <label class="field">
+                  <span>银行账号</span>
+                  <input id="s-account-no" type="text">
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="profile-editor">
+            <div class="form-block">
+              <div class="form-head">
+                <div class="form-head-icon"><i data-lucide="file-image"></i></div>
+                <div><h2>报价封面</h2><p>厂门照片自动作为每份报价的第一页</p></div>
+                <label class="switch" title="启用封面">
+                  <input id="p-cover-enabled" type="checkbox" checked>
+                  <span></span>
+                </label>
+              </div>
+              <div class="form-grid">
+                <label class="field field-wide">
+                  <span>厂门 / 厂区封面照片</span>
+                  <select id="s-cover-asset">
+                    <option value="">未选择，请先上传厂门照片</option>
+                  </select>
+                </label>
+                <label class="field field-wide">
+                  <span>封面副标题</span>
+                  <input id="s-cover-tagline" type="text">
+                </label>
+              </div>
+            </div>
+
+            <div class="form-block">
+              <div class="form-head">
+                <div class="form-head-icon"><i data-lucide="align-left"></i></div>
+                <div><h2>企业概况</h2><p>单独一页展示，可分段填写</p></div>
+                <label class="switch" title="启用企业概况页">
+                  <input id="p-overview-enabled" type="checkbox" checked>
+                  <span></span>
+                </label>
+              </div>
+              <label class="field field-full">
+                <span>企业概况内容</span>
+                <textarea id="s-overview" rows="10" placeholder="每段一行，导出时自动排版"></textarea>
+              </label>
+            </div>
+
+            <div class="form-block">
+              <div class="form-head">
+                <div class="form-head-icon"><i data-lucide="building-2"></i></div>
+                <div><h2>公司基本情况表</h2><p>作为固定一页跟随每份报价</p></div>
+                <label class="switch" title="启用基本情况表">
+                  <input id="p-basic-enabled" type="checkbox" checked>
+                  <span></span>
+                </label>
+              </div>
+              <div class="form-grid">
+                <label class="field">
+                  <span>成立时间</span>
+                  <input id="s-basic-established" type="text">
+                </label>
+                <label class="field">
+                  <span>注册资本</span>
+                  <input id="s-basic-capital" type="text">
+                </label>
+                <label class="field">
+                  <span>法定代表人</span>
+                  <input id="s-basic-legal" type="text">
+                </label>
+                <label class="field">
+                  <span>员工人数</span>
+                  <input id="s-basic-employees" type="text">
+                </label>
+                <label class="field field-wide">
+                  <span>厂房面积</span>
+                  <input id="s-basic-plant-area" type="text">
+                </label>
+                <label class="field field-full">
+                  <span>经营范围 / 主营业务</span>
+                  <input id="s-basic-scope" type="text">
+                </label>
+              </div>
+            </div>
+
+            <div class="form-block">
+              <div class="form-head">
+                <div class="form-head-icon"><i data-lucide="settings-2"></i></div>
+                <div><h2>公司主要设备情况表</h2><p>设备名称、规格和用途</p></div>
+                <div class="head-actions">
+                  <label class="switch" title="启用设备表">
+                    <input id="p-equipment-enabled" type="checkbox" checked>
+                    <span></span>
+                  </label>
+                  <button class="mini-btn" id="btn-add-equipment" type="button" title="添加设备">
+                    <i data-lucide="plus"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="profile-row-list" id="profile-equipment-rows"></div>
+            </div>
+
+            <div class="form-block">
+              <div class="form-head">
+                <div class="form-head-icon"><i data-lucide="award"></i></div>
+                <div><h2>资质证书照片</h2><p>勾选素材库中的资质照片，固定显示</p></div>
+                <label class="switch" title="启用资质照片">
+                  <input id="p-cert-enabled" type="checkbox" checked>
+                  <span></span>
+                </label>
+              </div>
+              <div class="cert-picker" id="profile-cert-assets"></div>
+            </div>
+
+            <div class="form-block">
+              <div class="form-head">
+                <div class="form-head-icon"><i data-lucide="trophy"></i></div>
+                <div><h2>业绩展示</h2><p>工程业绩 / 客户案例</p></div>
+                <div class="head-actions">
+                  <label class="switch" title="启用业绩页">
+                    <input id="p-projects-enabled" type="checkbox" checked>
+                    <span></span>
+                  </label>
+                  <button class="mini-btn" id="btn-add-project" type="button" title="添加业绩">
+                    <i data-lucide="plus"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="profile-row-list" id="profile-project-rows"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modal-backdrop" hidden></div>
+  <div class="toast-root" id="toast-root" aria-live="polite"></div>
+  <script src="assets/lucide.min.js"></script>
+  <script src="assets/app.js?v=202609047"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+.DS_Store
+__pycache__/
+data/*.json
+out/
+素材/*
+!素材/README.md

@@ -1,0 +1,14 @@
+{
+  "name": "zhaohui-quotation",
+  "version": "1.0.0",
+  "private": false,
+  "description": "江苏兆辉防腐科技报价单工作台",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "docx": "^9.6.1",
+    "image-size": "^1.2.2"
+  }
+}
