@@ -1,9 +1,7 @@
 services:
   zhaohui-quotation:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: zhaohui-quotation:latest
+    image: ghcr.io/zhaohui332/zhaohui-quotation:latest
+    pull_policy: always
     container_name: zhaohui-quotation
     restart: unless-stopped
     ports:
