@@ -1,0 +1,17 @@
+services:
+  zhaohui-quotation:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: zhaohui-quotation:latest
+    container_name: zhaohui-quotation
+    restart: unless-stopped
+    ports:
+      - "4731:4731"
+    environment:
+      - PORT=4731
+      - ZHAOHUI_PYTHON=python3
+    volumes:
+      - ./zhaohui-data/data:/app/data
+      - ./zhaohui-data/assets:/app/素材
+      - ./zhaohui-data/out:/app/out
