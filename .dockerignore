@@ -1,0 +1,11 @@
+node_modules
+.git
+.deploy-tools
+data
+out
+素材
+*.log
+.DS_Store
+__pycache__
+*.pyc
+.env

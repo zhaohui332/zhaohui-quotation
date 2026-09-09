@@ -119,6 +119,7 @@ def cn_money(value):
 
 def try_font_paths():
     candidates = [
+        "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc",
         "/System/Library/Fonts/Supplemental/Arial Unicode.ttf",
         "/Library/Fonts/Arial Unicode.ttf",
         "/System/Library/Fonts/PingFang.ttc",

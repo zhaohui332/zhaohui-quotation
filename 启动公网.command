@@ -15,4 +15,4 @@ fi
 
 echo "请确认「启动报价单.command」已经运行。"
 echo "正在建立公网地址，保持这个窗口打开即可。"
-exec "$BIN" tunnel --no-autoupdate --url http://127.0.0.1:4731
+"$BIN" tunnel --no-autoupdate --url http://127.0.0.1:4731 2>&1 | tee /tmp/zhaohui-tunnel.log
